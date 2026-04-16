@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- SEPA Remittance Form View -->
+    <record id="view_sepa_remittance_form" model="ir.ui.view">
+        <field name="name">sepa.remittance.form</field>
+        <field name="model">sepa.remittance</field>
+        <field name="arch" type="xml">
+            <form string="Remesa SEPA">
+                <header>
+                    <button name="action_add_pending_invoices"
+                            string="Añadir Facturas Pendientes"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm"
+                            string="Confirmar"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_generate_xml"
+                            string="Generar XML SEPA"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_mark_sent"
+                            string="Marcar como Presentada"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'exported'"/>
+                    <button name="action_reconcile"
+                            string="Conciliar"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'sent'"/>
+                    <button name="action_close"
+                            string="Cerrar"
+                            type="object"
+                            invisible="state != 'reconciled'"/>
+                    <button name="action_reset_to_draft"
+                            string="Volver a Borrador"
+                            type="object"
+                            invisible="state not in ('confirmed', 'exported')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,exported,sent,reconciled"/>
+                </header>
+                <sheet>
+                    <field name="xml_file" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_generate_xml"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-download"
+                                invisible="not xml_file">
+                            <span>Descargar XML</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Información General">
+                            <field name="date"/>
+                            <field name="requested_collection_date"/>
+                            <field name="bank_name"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Datos del Acreedor">
+                            <field name="creditor_name"/>
+                            <field name="creditor_identifier"/>
+                            <field name="creditor_iban"/>
+                            <field name="creditor_bic"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="line_count"/>
+                            <field name="total_amount"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Líneas de Remesa" name="lines">
+                            <field name="line_ids">
+                                <tree string="Recibos" editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="invoice_id"/>
+                                    <field name="mandate_id"/>
+                                    <field name="iban"/>
+                                    <field name="bic"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="collection_date"/>
+                                    <field name="communication"/>
+                                    <field name="state"/>
+                                    <field name="return_reason"
+                                           invisible="state != 'returned'"/>
+                                    <field name="return_date"
+                                           invisible="state != 'returned'"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notas" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- SEPA Remittance List View -->
+    <record id="view_sepa_remittance_list" model="ir.ui.view">
+        <field name="name">sepa.remittance.list</field>
+        <field name="model">sepa.remittance</field>
+        <field name="arch" type="xml">
+            <tree string="Remesas SEPA"
+                  decoration-info="state == 'draft'"
+                  decoration-success="state in ('reconciled', 'closed')"
+                  decoration-warning="state == 'exported'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="requested_collection_date"/>
+                <field name="bank_name"/>
+                <field name="line_count"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- SEPA Remittance Search View -->
+    <record id="view_sepa_remittance_search" model="ir.ui.view">
+        <field name="name">sepa.remittance.search</field>
+        <field name="model">sepa.remittance</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Remesas">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="bank_name"/>
+                <filter name="draft" string="Borrador"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmadas"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter name="exported" string="Exportadas"
+                        domain="[('state', '=', 'exported')]"/>
+                <filter name="sent" string="Presentadas"
+                        domain="[('state', '=', 'sent')]"/>
+                <separator/>
+                <filter name="this_month" string="Este Mes"
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_state" string="Estado"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_bank" string="Banco"
+                            context="{'group_by': 'bank_name'}"/>
+                    <filter name="group_month" string="Mes"
+                            context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban -->
+    <record id="view_sepa_remittance_kanban" model="ir.ui.view">
+        <field name="name">sepa.remittance.kanban</field>
+        <field name="model">sepa.remittance</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="alq_kanban_rem" sample="1">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="bank_name"/>
+                <field name="line_count"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click alq_rem_card alq_rem_#{record.state.raw_value}">
+                            <div class="alq_rc_top">
+                                <div class="alq_rc_ref">
+                                    <i class="fa fa-bank"/> <field name="name"/>
+                                </div>
+                                <span t-attf-class="badge alq_badge_#{record.state.raw_value}">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+                            <div class="alq_rc_amount">
+                                <field name="total_amount" widget="monetary"/>
+                            </div>
+                            <div class="alq_rc_meta">
+                                <span><i class="fa fa-calendar"/> <field name="date"/></span>
+                                <span><i class="fa fa-list"/> <field name="line_count"/> recibos</span>
+                                <span><i class="fa fa-university"/> <field name="bank_name"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Graph -->
+    <record id="view_sepa_remittance_graph" model="ir.ui.view">
+        <field name="name">sepa.remittance.graph</field>
+        <field name="model">sepa.remittance</field>
+        <field name="arch" type="xml">
+            <graph string="Análisis de Remesas" type="line">
+                <field name="date" interval="month"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sepa_remittance" model="ir.actions.act_window">
+        <field name="name">Remesas SEPA</field>
+        <field name="res_model">sepa.remittance</field>
+        <field name="view_mode">kanban,list,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una nueva remesa SEPA
+            </p>
+            <p>
+                Las remesas SEPA agrupan los recibos de adeudo directo para
+                presentarlos al banco en un único fichero XML.
+            </p>
+        </field>
+    </record>
+
+</odoo>

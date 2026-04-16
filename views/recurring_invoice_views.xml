@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Recurring Invoice Form View -->
+    <record id="view_recurring_invoice_form" model="ir.ui.view">
+        <field name="name">recurring.invoice.form</field>
+        <field name="model">recurring.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Facturación Recurrente">
+                <header>
+                    <button name="action_activate" string="Activar"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_pause" string="Pausar"
+                            type="object"
+                            invisible="state != 'active'"/>
+                    <button name="action_activate" string="Reactivar"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'paused'"/>
+                    <button name="action_close" string="Cerrar"
+                            type="object"
+                            invisible="state in ('draft', 'closed')"/>
+                    <button name="action_reset_to_draft" string="Volver a Borrador"
+                            type="object"
+                            invisible="state not in ('paused', 'closed')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,active"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoices"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o">
+                            <field name="invoice_count" widget="statinfo"
+                                   string="Facturas"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Cliente">
+                            <field name="partner_id"/>
+                            <field name="mandate_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Facturación">
+                            <field name="product_description"/>
+                            <field name="amount"/>
+                            <field name="interval"/>
+                            <field name="day_of_month"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Fechas">
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="next_invoice_date"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban -->
+    <record id="view_recurring_invoice_kanban" model="ir.ui.view">
+        <field name="name">recurring.invoice.kanban</field>
+        <field name="model">recurring.invoice</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="alq_kanban_sub" sample="1">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="interval"/>
+                <field name="next_invoice_date"/>
+                <field name="state"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click alq_sub_card alq_sub_#{record.state.raw_value}">
+                            <div class="alq_sc_top">
+                                <strong><field name="partner_id"/></strong>
+                                <span t-attf-class="badge alq_badge_#{record.state.raw_value}">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+                            <div class="alq_sc_ref">
+                                <field name="name"/>
+                            </div>
+                            <div class="alq_sc_amount">
+                                <field name="amount" widget="monetary"/>
+                                <span class="alq_sc_period">/ <field name="interval"/></span>
+                            </div>
+                            <div class="alq_sc_footer">
+                                <i class="fa fa-calendar"/> Próxima: <field name="next_invoice_date"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Recurring Invoice List View -->
+    <record id="view_recurring_invoice_list" model="ir.ui.view">
+        <field name="name">recurring.invoice.list</field>
+        <field name="model">recurring.invoice</field>
+        <field name="arch" type="xml">
+            <tree string="Facturación Recurrente"
+                  decoration-success="state == 'active'"
+                  decoration-muted="state == 'closed'"
+                  decoration-warning="state == 'paused'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_description"/>
+                <field name="amount" sum="Total Mensual"/>
+                <field name="interval"/>
+                <field name="next_invoice_date"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'paused'"
+                       decoration-muted="state == 'closed'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Graph -->
+    <record id="view_recurring_invoice_graph" model="ir.ui.view">
+        <field name="name">recurring.invoice.graph</field>
+        <field name="model">recurring.invoice</field>
+        <field name="arch" type="xml">
+            <graph string="Análisis de Suscripciones" type="bar" stacked="0">
+                <field name="state"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot -->
+    <record id="view_recurring_invoice_pivot" model="ir.ui.view">
+        <field name="name">recurring.invoice.pivot</field>
+        <field name="model">recurring.invoice</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de Suscripciones">
+                <field name="state" type="row"/>
+                <field name="interval" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Recurring Invoice Search View -->
+    <record id="view_recurring_invoice_search" model="ir.ui.view">
+        <field name="name">recurring.invoice.search</field>
+        <field name="model">recurring.invoice</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Suscripciones">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter name="active_subs" string="Activas"
+                        domain="[('state', '=', 'active')]"/>
+                <filter name="paused_subs" string="Pausadas"
+                        domain="[('state', '=', 'paused')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_state" string="Estado"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_partner" string="Cliente"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_interval" string="Periodicidad"
+                            context="{'group_by': 'interval'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_recurring_invoice" model="ir.actions.act_window">
+        <field name="name">Facturación Recurrente</field>
+        <field name="res_model">recurring.invoice</field>
+        <field name="view_mode">kanban,list,form,graph,pivot</field>
+        <field name="context">{'search_default_active_subs': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una nueva suscripción de facturación recurrente
+            </p>
+            <p>
+                Configure la facturación mensual automática para cada cliente
+                de alquiler de equipos.
+            </p>
+        </field>
+    </record>
+
+</odoo>

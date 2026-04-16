@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_alquiler_dashboard_form" model="ir.ui.view">
+        <field name="name">alquiler.dashboard.form</field>
+        <field name="model">alquiler.dashboard</field>
+        <field name="arch" type="xml">
+            <form class="o_alquiler_dashboard" create="false" edit="false" delete="false">
+                <sheet>
+                    <field name="currency_id" invisible="1"/>
+
+                    <div class="alq_hero">
+                        <div class="alq_hero_content">
+                            <h1>Panel de Control</h1>
+                            <p class="alq_subtitle">Alquiler de Equipos · Aqua Plus Vital S.L.</p>
+                        </div>
+                        <div class="alq_hero_badge">
+                            <i class="fa fa-tachometer"/>
+                        </div>
+                    </div>
+
+                    <div class="alq_kpi_grid">
+
+                        <div class="alq_kpi alq_kpi_blue" name="customers">
+                            <button name="action_view_customers" type="object" class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-users"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Clientes Activos</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="active_customers" nolabel="1"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        de <field name="total_customers" nolabel="1"/> totales
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_green" name="revenue">
+                            <div class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-euro"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Facturación Mensual</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="total_monthly_revenue" nolabel="1" widget="monetary"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        Ingresos recurrentes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_purple" name="mandates">
+                            <button name="action_view_active_mandates" type="object" class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-file-text-o"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Mandatos SEPA</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="total_active_mandates" nolabel="1"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        Activos
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_orange" name="invoices_month">
+                            <button name="action_view_invoices_this_month" type="object" class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-file-invoice"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Facturas del Mes</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="invoices_this_month" nolabel="1"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        <field name="invoices_this_month_amount" nolabel="1" widget="monetary"/>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_red" name="pending">
+                            <button name="action_view_pending_invoices" type="object" class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-exclamation-triangle"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Facturas Pendientes</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="pending_invoices" nolabel="1"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        <field name="pending_invoices_amount" nolabel="1" widget="monetary"/>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_teal" name="remesas">
+                            <button name="action_view_remesas" type="object" class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-bank"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Remesas del Mes</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="remesas_this_month" nolabel="1"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        Enviadas al banco
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_pink" name="returns">
+                            <button name="action_view_returns" type="object" class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-undo"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Devoluciones</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="returned_invoices" nolabel="1"/>
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        <field name="returned_invoices_amount" nolabel="1" widget="monetary"/>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="alq_kpi alq_kpi_dark" name="morosidad">
+                            <div class="alq_kpi_btn">
+                                <div class="alq_kpi_icon"><i class="fa fa-percent"/></div>
+                                <div class="alq_kpi_body">
+                                    <div class="alq_kpi_label">Tasa de Morosidad</div>
+                                    <div class="alq_kpi_value">
+                                        <field name="morosidad_rate" nolabel="1" widget="float" digits="[16,2]"/>%
+                                    </div>
+                                    <div class="alq_kpi_sub">
+                                        Ratio de devoluciones
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="alq_section">
+                        <h2><i class="fa fa-bolt"/> Acciones Rápidas</h2>
+                        <div class="alq_actions_grid">
+                            <button name="%(alquiler_equipos.action_res_partner_rental)d"
+                                    type="action" class="btn alq_action_btn alq_action_blue">
+                                <i class="fa fa-user-plus"/>
+                                <span>Nuevo Cliente</span>
+                            </button>
+                            <button name="%(alquiler_equipos.action_recurring_invoice)d"
+                                    type="action" class="btn alq_action_btn alq_action_green">
+                                <i class="fa fa-refresh"/>
+                                <span>Suscripciones</span>
+                            </button>
+                            <button name="%(alquiler_equipos.action_sepa_mandate)d"
+                                    type="action" class="btn alq_action_btn alq_action_purple">
+                                <i class="fa fa-file-text-o"/>
+                                <span>Mandatos SEPA</span>
+                            </button>
+                            <button name="%(alquiler_equipos.action_sepa_remittance)d"
+                                    type="action" class="btn alq_action_btn alq_action_orange">
+                                <i class="fa fa-bank"/>
+                                <span>Remesas SEPA</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_alquiler_dashboard" model="ir.actions.server">
+        <field name="name">Panel de Control</field>
+        <field name="model_id" ref="model_alquiler_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">action = env['alquiler.dashboard'].action_open_dashboard()</field>
+    </record>
+
+</odoo>

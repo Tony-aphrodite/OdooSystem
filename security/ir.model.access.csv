@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sepa_mandate_user,sepa.mandate.user,model_sepa_mandate,group_alquiler_user,1,1,1,0
+access_sepa_mandate_manager,sepa.mandate.manager,model_sepa_mandate,group_alquiler_manager,1,1,1,1
+access_sepa_remittance_user,sepa.remittance.user,model_sepa_remittance,group_alquiler_user,1,1,1,0
+access_sepa_remittance_manager,sepa.remittance.manager,model_sepa_remittance,group_alquiler_manager,1,1,1,1
+access_sepa_remittance_line_user,sepa.remittance.line.user,model_sepa_remittance_line,group_alquiler_user,1,1,1,0
+access_sepa_remittance_line_manager,sepa.remittance.line.manager,model_sepa_remittance_line,group_alquiler_manager,1,1,1,1
+access_recurring_invoice_user,recurring.invoice.user,model_recurring_invoice,group_alquiler_user,1,1,1,0
+access_recurring_invoice_manager,recurring.invoice.manager,model_recurring_invoice,group_alquiler_manager,1,1,1,1
+access_sepa_export_wizard_user,sepa.export.wizard.user,model_sepa_export_wizard,group_alquiler_user,1,1,1,0
+access_sepa_export_wizard_manager,sepa.export.wizard.manager,model_sepa_export_wizard,group_alquiler_manager,1,1,1,1
+access_alquiler_dashboard_user,alquiler.dashboard.user,model_alquiler_dashboard,group_alquiler_user,1,1,1,0
+access_alquiler_dashboard_manager,alquiler.dashboard.manager,model_alquiler_dashboard,group_alquiler_manager,1,1,1,1

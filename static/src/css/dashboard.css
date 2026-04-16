@@ -1,0 +1,548 @@
+/* ==========================================================================
+   Alquiler de Equipos – Modern Dashboard & Kanban Styling
+   ========================================================================== */
+
+/* ----- Dashboard root ----- */
+.o_alquiler_dashboard .o_form_sheet_bg {
+    background: linear-gradient(135deg, #f5f7fb 0%, #eef2f8 100%) !important;
+}
+
+.o_alquiler_dashboard .o_form_sheet {
+    max-width: 1400px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* ----- Hero banner ----- */
+.alq_hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 18px;
+    padding: 36px 40px;
+    margin-bottom: 32px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.alq_hero_content h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.alq_hero_content .alq_subtitle {
+    font-size: 15px;
+    opacity: 0.9;
+    margin: 0;
+    color: #fff;
+}
+
+.alq_hero_badge {
+    font-size: 60px;
+    opacity: 0.25;
+}
+
+/* ----- KPI Grid ----- */
+.alq_kpi_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 36px;
+}
+
+.alq_kpi {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s, box-shadow 0.25s;
+    background: #fff;
+    border: none;
+}
+
+.alq_kpi:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.alq_kpi_btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.alq_kpi_btn:hover,
+.alq_kpi_btn:focus {
+    background: transparent;
+    color: #fff;
+    outline: none;
+    box-shadow: none;
+}
+
+.alq_kpi_icon {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #fff;
+}
+
+.alq_kpi_body {
+    flex: 1;
+    min-width: 0;
+}
+
+.alq_kpi_label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    opacity: 0.9;
+    margin-bottom: 4px;
+}
+
+.alq_kpi_value {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 4px;
+}
+
+.alq_kpi_value .o_field_widget {
+    color: inherit !important;
+    font-weight: inherit !important;
+    font-size: inherit !important;
+}
+
+.alq_kpi_sub {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.alq_kpi_sub .o_field_widget {
+    color: inherit !important;
+    font-size: inherit !important;
+}
+
+/* ----- KPI Colors ----- */
+.alq_kpi_blue   { background: linear-gradient(135deg, #4facfe 0%, #00c2ff 100%); }
+.alq_kpi_green  { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.alq_kpi_purple { background: linear-gradient(135deg, #a18cd1 0%, #667eea 100%); }
+.alq_kpi_orange { background: linear-gradient(135deg, #fa8142 0%, #ffbc42 100%); }
+.alq_kpi_red    { background: linear-gradient(135deg, #ff6a88 0%, #ff3f6e 100%); }
+.alq_kpi_teal   { background: linear-gradient(135deg, #13b2b5 0%, #3acfd5 100%); }
+.alq_kpi_pink   { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.alq_kpi_dark   { background: linear-gradient(135deg, #2c3e50 0%, #4b6cb7 100%); }
+
+.alq_kpi_blue   .alq_kpi_btn,
+.alq_kpi_green  .alq_kpi_btn,
+.alq_kpi_purple .alq_kpi_btn,
+.alq_kpi_orange .alq_kpi_btn,
+.alq_kpi_red    .alq_kpi_btn,
+.alq_kpi_teal   .alq_kpi_btn,
+.alq_kpi_pink   .alq_kpi_btn,
+.alq_kpi_dark   .alq_kpi_btn {
+    color: #fff !important;
+}
+
+/* ----- Section ----- */
+.alq_section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.alq_section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alq_section h2 i {
+    color: #667eea;
+}
+
+/* ----- Action buttons ----- */
+.alq_actions_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.alq_action_btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.alq_action_btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    color: #fff;
+}
+
+.alq_action_btn i {
+    font-size: 28px;
+}
+
+.alq_action_blue   { background: linear-gradient(135deg, #4facfe, #00c2ff); }
+.alq_action_green  { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+.alq_action_purple { background: linear-gradient(135deg, #a18cd1, #667eea); }
+.alq_action_orange { background: linear-gradient(135deg, #fa8142, #ffbc42); }
+
+/* ==========================================================================
+   KANBAN - Customer Cards
+   ========================================================================== */
+
+.alq_kanban_customers .o_kanban_record {
+    width: 340px !important;
+    margin: 10px !important;
+}
+
+.alq_customer_card {
+    padding: 0 !important;
+    border-radius: 14px !important;
+    overflow: hidden;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08) !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: #fff;
+}
+
+.alq_customer_card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.15) !important;
+}
+
+.alq_cc_header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+}
+
+.alq_cc_avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+
+.alq_cc_avatar_text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.alq_cc_info {
+    flex: 1;
+    min-width: 0;
+}
+
+.alq_cc_name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.alq_cc_city {
+    font-size: 12px;
+    opacity: 0.9;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.alq_cc_city .o_field_widget {
+    color: #fff !important;
+}
+
+.alq_cc_status .badge {
+    font-size: 11px;
+    padding: 5px 10px;
+}
+
+.alq_cc_body {
+    padding: 14px 16px;
+}
+
+.alq_cc_amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: #f5f7fb;
+    border-radius: 10px;
+    border-left: 4px solid #43e97b;
+}
+
+.alq_cc_amount_label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.alq_cc_amount_value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.alq_cc_amount_value .o_field_widget {
+    font-weight: 700 !important;
+    color: #2c3e50 !important;
+}
+
+.alq_cc_meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: #666;
+}
+
+.alq_cc_meta_item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.alq_cc_meta_item i {
+    color: #667eea;
+    width: 14px;
+}
+
+/* ==========================================================================
+   KANBAN - Subscriptions / Mandates / Remittances
+   ========================================================================== */
+
+.alq_sub_card, .alq_mand_card, .alq_rem_card {
+    padding: 16px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08) !important;
+    transition: transform 0.2s;
+    border-left: 4px solid #667eea;
+}
+
+.alq_sub_card:hover, .alq_mand_card:hover, .alq_rem_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.13) !important;
+}
+
+/* Subscription colors by state */
+.alq_sub_active    { border-left-color: #43e97b; }
+.alq_sub_draft     { border-left-color: #4facfe; }
+.alq_sub_paused    { border-left-color: #fa8142; }
+.alq_sub_closed    { border-left-color: #95a5a6; }
+
+.alq_sc_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.alq_sc_ref {
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.alq_sc_amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.alq_sc_period {
+    font-size: 12px;
+    font-weight: 400;
+    color: #888;
+}
+
+.alq_sc_footer {
+    font-size: 12px;
+    color: #666;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.alq_sc_footer i {
+    color: #667eea;
+    margin-right: 4px;
+}
+
+/* Mandate colors */
+.alq_mand_active  { border-left-color: #43e97b; }
+.alq_mand_draft   { border-left-color: #4facfe; }
+.alq_mand_closed  { border-left-color: #95a5a6; }
+.alq_mand_revoked { border-left-color: #ff3f6e; }
+
+.alq_mand_card {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.alq_mc_icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.alq_mc_main {
+    flex: 1;
+    min-width: 0;
+}
+
+.alq_mc_ref {
+    font-weight: 700;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+.alq_mc_partner {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.alq_mc_iban {
+    font-family: monospace;
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 6px;
+}
+
+.alq_mc_meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: #666;
+}
+
+.alq_mc_scheme, .alq_mc_seq {
+    background: #f0f3fa;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Remittance colors */
+.alq_rem_draft      { border-left-color: #4facfe; }
+.alq_rem_confirmed  { border-left-color: #a18cd1; }
+.alq_rem_exported   { border-left-color: #fa8142; }
+.alq_rem_sent       { border-left-color: #13b2b5; }
+.alq_rem_reconciled { border-left-color: #43e97b; }
+.alq_rem_closed     { border-left-color: #95a5a6; }
+
+.alq_rc_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.alq_rc_ref {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.alq_rc_ref i {
+    color: #667eea;
+    margin-right: 6px;
+}
+
+.alq_rc_amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.alq_rc_meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #666;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.alq_rc_meta i {
+    color: #667eea;
+    margin-right: 4px;
+}
+
+/* ==========================================================================
+   Status Badges
+   ========================================================================== */
+
+.badge.alq_badge_active,
+.badge.alq_badge_reconciled    { background: #43e97b !important; color: #fff !important; }
+.badge.alq_badge_draft         { background: #4facfe !important; color: #fff !important; }
+.badge.alq_badge_paused,
+.badge.alq_badge_exported      { background: #fa8142 !important; color: #fff !important; }
+.badge.alq_badge_closed        { background: #95a5a6 !important; color: #fff !important; }
+.badge.alq_badge_revoked       { background: #ff3f6e !important; color: #fff !important; }
+.badge.alq_badge_confirmed     { background: #a18cd1 !important; color: #fff !important; }
+.badge.alq_badge_sent          { background: #13b2b5 !important; color: #fff !important; }

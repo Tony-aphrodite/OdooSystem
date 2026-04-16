@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend Partner Form View with smart buttons + rental tab -->
+    <record id="view_partner_form_inherit_alquiler" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.alquiler</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_mandates"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        invisible="not is_rental_customer">
+                    <field name="sepa_mandate_count" widget="statinfo" string="Mandatos"/>
+                </button>
+                <button name="action_view_recurring_invoices"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-refresh"
+                        invisible="not is_rental_customer">
+                    <field name="recurring_invoice_count" widget="statinfo" string="Suscripciones"/>
+                </button>
+                <button name="action_view_rental_invoices"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-invoice"
+                        invisible="not is_rental_customer">
+                    <field name="rental_invoice_count" widget="statinfo" string="Facturas"/>
+                </button>
+                <button name="action_view_rental_invoices"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-euro"
+                        invisible="not is_rental_customer">
+                    <div class="o_stat_info">
+                        <field name="rental_pending_amount" widget="monetary" class="o_stat_value"/>
+                        <span class="o_stat_text">Pendiente</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <xpath expr="//page[@name='internal_notes']" position="before">
+                <page string="Alquiler de Equipos" name="rental_info">
+                    <group>
+                        <group string="Configuración de Alquiler">
+                            <field name="is_rental_customer" widget="boolean_toggle"/>
+                            <field name="rental_active" widget="boolean_toggle"
+                                   invisible="not is_rental_customer"/>
+                            <field name="rental_monthly_amount"
+                                   invisible="not is_rental_customer"/>
+                            <field name="rental_concept"
+                                   invisible="not is_rental_customer"/>
+                            <field name="rental_day_of_month"
+                                   invisible="not is_rental_customer"/>
+                            <field name="rental_collection_day"
+                                   invisible="not is_rental_customer"/>
+                            <field name="rental_start_date"
+                                   invisible="not is_rental_customer"/>
+                            <field name="rental_end_date"
+                                   invisible="not is_rental_customer"/>
+                        </group>
+                        <group string="SEPA"
+                               invisible="not is_rental_customer">
+                            <field name="active_mandate_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kanban view for rental customers -->
+    <record id="view_partner_kanban_rental" model="ir.ui.view">
+        <field name="name">res.partner.kanban.rental</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile alq_kanban_customers" sample="1">
+                <field name="name"/>
+                <field name="city"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="rental_monthly_amount"/>
+                <field name="rental_active"/>
+                <field name="active_mandate_id"/>
+                <field name="currency_id"/>
+                <field name="image_128"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click alq_customer_card">
+                            <div class="alq_cc_header">
+                                <img t-if="record.image_128.raw_value"
+                                     t-att-src="kanban_image('res.partner', 'image_128', record.id.raw_value)"
+                                     class="alq_cc_avatar" alt="Avatar"/>
+                                <div t-else="" class="alq_cc_avatar alq_cc_avatar_text">
+                                    <t t-esc="record.name.raw_value and record.name.raw_value[0]"/>
+                                </div>
+                                <div class="alq_cc_info">
+                                    <div class="alq_cc_name">
+                                        <field name="name"/>
+                                    </div>
+                                    <div class="alq_cc_city">
+                                        <i class="fa fa-map-marker"/>
+                                        <field name="city"/>
+                                    </div>
+                                </div>
+                                <div class="alq_cc_status">
+                                    <span t-if="record.rental_active.raw_value"
+                                          class="badge rounded-pill text-bg-success">Activo</span>
+                                    <span t-else="" class="badge rounded-pill text-bg-secondary">Inactivo</span>
+                                </div>
+                            </div>
+                            <div class="alq_cc_body">
+                                <div class="alq_cc_amount">
+                                    <span class="alq_cc_amount_label">Alquiler mensual</span>
+                                    <span class="alq_cc_amount_value">
+                                        <field name="rental_monthly_amount" widget="monetary"/>
+                                    </span>
+                                </div>
+                                <div class="alq_cc_meta">
+                                    <div t-if="record.email.raw_value" class="alq_cc_meta_item">
+                                        <i class="fa fa-envelope"/>
+                                        <field name="email"/>
+                                    </div>
+                                    <div t-if="record.phone.raw_value" class="alq_cc_meta_item">
+                                        <i class="fa fa-phone"/>
+                                        <field name="phone"/>
+                                    </div>
+                                    <div class="alq_cc_meta_item">
+                                        <i class="fa fa-file-text-o"/>
+                                        <t t-if="record.active_mandate_id.raw_value">Con mandato SEPA</t>
+                                        <t t-else="">Sin mandato</t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_partner_list_rental" model="ir.ui.view">
+        <field name="name">res.partner.list.rental</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree string="Clientes de Alquiler"
+                  decoration-success="rental_active == True"
+                  decoration-muted="rental_active == False">
+                <field name="name"/>
+                <field name="city"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="rental_monthly_amount" sum="Total"/>
+                <field name="active_mandate_id"/>
+                <field name="rental_active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_partner_search_rental" model="ir.ui.view">
+        <field name="name">res.partner.search.rental</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="city"/>
+                <field name="email"/>
+                <filter name="rental_active" string="Activos"
+                        domain="[('rental_active', '=', True)]"/>
+                <filter name="rental_inactive" string="Inactivos"
+                        domain="[('rental_active', '=', False)]"/>
+                <filter name="with_mandate" string="Con Mandato SEPA"
+                        domain="[('active_mandate_id', '!=', False)]"/>
+                <filter name="without_mandate" string="Sin Mandato"
+                        domain="[('active_mandate_id', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_city" string="Ciudad"
+                            context="{'group_by': 'city'}"/>
+                    <filter name="group_active" string="Estado"
+                            context="{'group_by': 'rental_active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_res_partner_rental" model="ir.actions.act_window">
+        <field name="name">Clientes de Alquiler</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_rental_customer', '=', True)]</field>
+        <field name="context">{'default_is_rental_customer': True, 'default_rental_active': True}</field>
+        <field name="search_view_id" ref="view_partner_search_rental"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un nuevo cliente de alquiler
+            </p>
+            <p>
+                Gestione sus clientes con sus datos de alquiler, mandatos SEPA
+                y facturación recurrente.
+            </p>
+        </field>
+    </record>
+
+</odoo>

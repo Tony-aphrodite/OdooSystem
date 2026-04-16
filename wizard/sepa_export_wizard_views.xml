@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- SEPA Export Wizard Form -->
+    <record id="view_sepa_export_wizard_form" model="ir.ui.view">
+        <field name="name">sepa.export.wizard.form</field>
+        <field name="model">sepa.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generar Remesa SEPA">
+                <group>
+                    <group string="Filtro de Facturas">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group string="Datos de la Remesa">
+                        <field name="requested_collection_date"/>
+                        <field name="bank_name"/>
+                    </group>
+                </group>
+                <group string="Datos del Acreedor">
+                    <field name="creditor_identifier"/>
+                    <field name="creditor_iban"/>
+                    <field name="creditor_bic"/>
+                </group>
+                <footer>
+                    <button name="action_create_remittance"
+                            string="Crear Remesa"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Cancelar" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sepa_export_wizard" model="ir.actions.act_window">
+        <field name="name">Generar Remesa SEPA</field>
+        <field name="res_model">sepa.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

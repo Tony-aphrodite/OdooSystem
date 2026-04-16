@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Update Main Company -->
+    <record id="base.main_company" model="res.company">
+        <field name="name">Aqua Plus Vital SL</field>
+        <field name="street">Calle Gran Via, 42, Bajo A</field>
+        <field name="city">Cuenca</field>
+        <field name="zip">16001</field>
+        <field name="phone">+1 (825) 479-3100</field>
+    </record>
+
+    <!-- Update Main Partner -->
+    <record id="base.main_partner" model="res.partner">
+        <field name="name">Aqua Plus Vital SL</field>
+        <field name="street">Calle Gran Via, 42, Bajo A</field>
+        <field name="city">Cuenca</field>
+        <field name="zip">16001</field>
+        <field name="phone">+1 (825) 479-3100</field>
+        <field name="email">aupwork00@gmail.com</field>
+    </record>
+
+</odoo>

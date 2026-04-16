@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem id="menu_alquiler_root"
+              name="Alquiler Equipos"
+              web_icon="alquiler_equipos,static/description/icon.png"
+              sequence="100"/>
+
+    <!-- Dashboard -->
+    <menuitem id="menu_dashboard"
+              name="Panel de Control"
+              parent="menu_alquiler_root"
+              action="action_alquiler_dashboard"
+              sequence="1"/>
+
+    <!-- Clientes (top level) -->
+    <menuitem id="menu_clientes_root"
+              name="Clientes"
+              parent="menu_alquiler_root"
+              action="action_res_partner_rental"
+              sequence="5"/>
+
+    <!-- Facturación -->
+    <menuitem id="menu_facturacion"
+              name="Facturación"
+              parent="menu_alquiler_root"
+              sequence="10"/>
+
+    <menuitem id="menu_recurring_invoice"
+              name="Suscripciones"
+              parent="menu_facturacion"
+              action="action_recurring_invoice"
+              sequence="10"/>
+
+    <!-- SEPA -->
+    <menuitem id="menu_sepa"
+              name="SEPA"
+              parent="menu_alquiler_root"
+              sequence="20"/>
+
+    <menuitem id="menu_sepa_remittance"
+              name="Remesas"
+              parent="menu_sepa"
+              action="action_sepa_remittance"
+              sequence="10"/>
+
+    <menuitem id="menu_sepa_mandate"
+              name="Mandatos"
+              parent="menu_sepa"
+              action="action_sepa_mandate"
+              sequence="20"/>
+
+    <!-- Configuración -->
+    <menuitem id="menu_config"
+              name="Configuración"
+              parent="menu_alquiler_root"
+              sequence="90"
+              groups="base.group_system"/>
+
+</odoo>

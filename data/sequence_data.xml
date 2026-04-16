@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Recurring Invoice Sequence -->
+    <record id="seq_recurring_invoice" model="ir.sequence">
+        <field name="name">Facturación Recurrente</field>
+        <field name="code">recurring.invoice</field>
+        <field name="prefix">SUB/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- SEPA Remittance Sequence -->
+    <record id="seq_sepa_remittance" model="ir.sequence">
+        <field name="name">Remesa SEPA</field>
+        <field name="code">sepa.remittance</field>
+        <field name="prefix">REM/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+    </record>
+
+</odoo>
