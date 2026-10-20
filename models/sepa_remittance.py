@@ -7,6 +7,8 @@ from lxml import etree
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+from .sepa_validation import is_valid_bic, is_valid_creditor_identifier, is_valid_iban
+
 _logger = logging.getLogger(__name__)
 
 
@@ -186,7 +188,46 @@ class SepaRemittance(models.Model):
                 raise UserError(_('Debe indicar el identificador del acreedor.'))
             if not rem.creditor_iban:
                 raise UserError(_('Debe indicar el IBAN del acreedor.'))
+            rem._check_sepa_account_data()
             rem.state = 'confirmed'
+
+    def _check_sepa_account_data(self):
+        """Check the identifiers and accounts before the file is generated.
+
+        The bank rejects the whole file when one of them is wrong, so list
+        every problem at once.
+        """
+        self.ensure_one()
+        errors = []
+        if not is_valid_creditor_identifier(self.creditor_identifier):
+            errors.append(_(
+                'Identificador del acreedor %s: formato o dígitos de control '
+                'incorrectos (ejemplo: ES97000B12345678).',
+                self.creditor_identifier,
+            ))
+        if not is_valid_iban(self.creditor_iban):
+            errors.append(_('IBAN del acreedor %s: no es válido.', self.creditor_iban))
+        if self.creditor_bic and not is_valid_bic(self.creditor_bic):
+            errors.append(_('BIC del acreedor %s: no es válido.', self.creditor_bic))
+        for line in self.line_ids:
+            if not is_valid_iban(line.iban):
+                errors.append(_(
+                    '%(partner)s: el IBAN %(iban)s no es válido.',
+                    partner=line.partner_id.display_name, iban=line.iban or '-',
+                ))
+            if line.bic and not is_valid_bic(line.bic):
+                errors.append(_(
+                    '%(partner)s: el BIC %(bic)s no es válido.',
+                    partner=line.partner_id.display_name, bic=line.bic,
+                ))
+        if errors:
+            shown = errors[:20]
+            if len(errors) > len(shown):
+                shown.append(_('... y %s errores más.', len(errors) - len(shown)))
+            raise UserError(
+                _('Corrija estos datos antes de confirmar la remesa:') + '\n\n- '
+                + '\n- '.join(shown)
+            )
 
     def action_generate_xml(self):
         """Generate SEPA Direct Debit XML (pain.008.001.02)."""
