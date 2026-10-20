@@ -107,7 +107,7 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click alq_mand_card alq_mand_#{record.state.raw_value}">
                             <div class="alq_mc_icon">
-                                <i class="fa fa-file-text-o"/>
+                                <i class="fa fa-file-text-o" role="img" aria-label="Mandato SEPA" title="Mandato SEPA"/>
                             </div>
                             <div class="alq_mc_main">
                                 <div class="alq_mc_ref"><field name="unique_mandate_reference"/></div>
@@ -121,7 +121,7 @@
                                         <field name="sequence_type"/>
                                     </span>
                                     <span class="alq_mc_date">
-                                        <i class="fa fa-calendar"/> <field name="signature_date"/>
+                                        <i class="fa fa-calendar" role="img" aria-label="Fecha de firma" title="Fecha de firma"/> <field name="signature_date"/>
                                     </span>
                                 </div>
                             </div>

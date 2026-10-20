@@ -178,7 +178,7 @@
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click alq_rem_card alq_rem_#{record.state.raw_value}">
                             <div class="alq_rc_top">
                                 <div class="alq_rc_ref">
-                                    <i class="fa fa-bank"/> <field name="name"/>
+                                    <i class="fa fa-bank" role="img" aria-label="Remesa" title="Remesa"/> <field name="name"/>
                                 </div>
                                 <span t-attf-class="badge alq_badge_#{record.state.raw_value}">
                                     <field name="state"/>
@@ -188,9 +188,9 @@
                                 <field name="total_amount" widget="monetary"/>
                             </div>
                             <div class="alq_rc_meta">
-                                <span><i class="fa fa-calendar"/> <field name="date"/></span>
-                                <span><i class="fa fa-list"/> <field name="line_count"/> recibos</span>
-                                <span><i class="fa fa-university"/> <field name="bank_name"/></span>
+                                <span><i class="fa fa-calendar" role="img" aria-label="Fecha" title="Fecha"/> <field name="date"/></span>
+                                <span><i class="fa fa-list" role="img" aria-label="Recibos" title="Recibos"/> <field name="line_count"/> recibos</span>
+                                <span><i class="fa fa-university" role="img" aria-label="Banco" title="Banco"/> <field name="bank_name"/></span>
                             </div>
                         </div>
                     </t>
