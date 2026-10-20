@@ -13,7 +13,7 @@ ISO 20022 `pain.008` file you upload to your bank.
 
 ## Features
 
-- **Recurring invoices**: monthly, quarterly or yearly subscriptions. A daily scheduled action creates the invoices and moves the next invoice date forward.
+- **Recurring invoices**: monthly, quarterly or yearly subscriptions. A daily scheduled action creates the invoices, posts them if the subscription asks for it, and moves the next invoice date forward.
 - **SEPA mandates**: unique mandate reference (UMR), debtor IBAN and BIC, CORE or B2B scheme, sequence type and signature date. Each mandate goes through draft, active, closed or revoked, and every change is tracked in the chatter.
 - **SEPA remittances**: one click adds every posted, unpaid invoice whose customer has an active mandate. Each customer can have their own collection day.
 - **`pain.008.001.02` export**: the XML file has one payment block per collection date, as SEPA requires when dates differ.
@@ -76,6 +76,7 @@ The interface is in Spanish.
 1. **Customer**: *Alquiler Equipos → Clientes*. Open a customer, go to the **Alquiler de Equipos** tab and set the monthly fee, invoice day and collection day.
 2. **Mandate**: *SEPA → Mandatos*. Create the mandate with its reference, bank account and signature date, then click **Activate**.
 3. **Subscription**: *Facturación → Suscripciones*. Choose the customer, amount, interval, next invoice date and mandate, then click **Activate**.
+   Tick **Publicar Automáticamente** to post each invoice as soon as it is created.
 4. **Invoices**: the scheduled action *Alquiler: Generar Facturas Recurrentes* runs every day and creates draft invoices. Review and post them in Accounting.
 5. **Remittance**: *SEPA → Remesas → New*. Set the requested collection date and click **Añadir Facturas Pendientes**, then **Confirmar** and **Generar XML SEPA**. Upload the file to your bank.
 6. After the bank collects the payments, click **Marcar como Presentada**, then **Conciliar** and finally **Cerrar**.
@@ -150,7 +151,6 @@ cleanup_demo_data(env)
 
 - Every transaction is exported as `CORE` / `RCUR`. The scheme and sequence type stored on the mandate are not yet written to the file.
 - The export uses `pain.008.001.02`. Check which version your bank accepts.
-- Invoices created by the scheduled action are drafts and must be posted manually.
 - **Conciliar** updates the remittance status only. Register the payments by reconciling the bank statement in Accounting.
 
 Tested on Odoo 17.0 Community with Python 3.12 and PostgreSQL 16: installation with and without demo data, the recurring invoice job, remittance creation and XML export.
