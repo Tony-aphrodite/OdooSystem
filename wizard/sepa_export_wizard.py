@@ -8,11 +8,19 @@ class SepaExportWizard(models.TransientModel):
 
     date_from = fields.Date(
         string='Facturas Desde',
-        default=fields.Date.today,
+        help='Vacío: sin límite inicial',
     )
     date_to = fields.Date(
         string='Facturas Hasta',
         default=fields.Date.today,
+        help='Vacío: sin límite final',
+    )
+    scheme = fields.Selection([
+        ('CORE', 'CORE (Particulares)'),
+        ('B2B', 'B2B (Empresas)'),
+    ], string='Esquema', required=True, default='CORE',
+        help='Solo se añaden facturas de clientes cuyo mandato activo usa '
+             'este esquema. El banco necesita un fichero por esquema.',
     )
     requested_collection_date = fields.Date(
         string='Fecha de Cobro por Defecto',
@@ -51,7 +59,11 @@ class SepaExportWizard(models.TransientModel):
             'creditor_bic': self.creditor_bic,
         })
 
-        remittance.action_add_pending_invoices()
+        remittance.action_add_pending_invoices(
+            date_from=self.date_from,
+            date_to=self.date_to,
+            scheme=self.scheme,
+        )
 
         return {
             'type': 'ir.actions.act_window',

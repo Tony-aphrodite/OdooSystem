@@ -77,7 +77,8 @@ The interface is in Spanish.
 2. **Mandate**: *SEPA → Mandatos*. Create the mandate with its reference, bank account and signature date, then click **Activate**.
 3. **Subscription**: *Facturación → Suscripciones*. Choose the customer, amount, interval, next invoice date and mandate, then click **Activate**.
 4. **Invoices**: the scheduled action *Alquiler: Generar Facturas Recurrentes* runs every day and creates draft invoices. Review and post them in Accounting.
-5. **Remittance**: *SEPA → Remesas → New*. Set the requested collection date and click **Añadir Facturas Pendientes**, then **Confirmar** and **Generar XML SEPA**. Upload the file to your bank.
+5. **Remittance**: *SEPA → Generar Remesa*. Pick the invoice date range, the scheme (CORE or B2B) and the requested collection date, then click **Crear Remesa**. The remittance opens with the matching pending invoices. Click **Confirmar** and **Generar XML SEPA**, and upload the file to your bank.
+   You can also start from *SEPA → Remesas → New* and click **Añadir Facturas Pendientes** to add every pending invoice.
 6. After the bank collects the payments, click **Marcar como Presentada**, then **Conciliar** and finally **Cerrar**.
 
 ### Sample output
