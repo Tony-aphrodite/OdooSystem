@@ -96,6 +96,13 @@ class RecurringInvoice(models.Model):
         domain="[('partner_id', '=', partner_id), ('state', '=', 'active')]",
         help='Mandato SEPA para el adeudo directo de esta suscripción',
     )
+    auto_post = fields.Boolean(
+        string='Publicar Automáticamente',
+        default=False,
+        tracking=True,
+        help='Publica cada factura al generarla, para que se pueda añadir '
+             'directamente a una remesa SEPA sin revisarla antes',
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -165,6 +172,8 @@ class RecurringInvoice(models.Model):
             })],
         }
         invoice = self.env['account.move'].create(invoice_vals)
+        if self.auto_post:
+            invoice.action_post()
         _logger.info(
             'Factura recurrente %s creada para cliente %s - Importe: %s',
             invoice.name, self.partner_id.name, self.amount,
@@ -191,13 +200,19 @@ class RecurringInvoice(models.Model):
 
         for sub in subscriptions:
             try:
-                sub._create_invoice()
-                sub.next_invoice_date = sub.next_invoice_date + sub._get_interval_delta()
+                # A failing subscription must not leave a half-created invoice
+                # behind, nor break the transaction for the other ones.
+                with self.env.cr.savepoint():
+                    sub._create_invoice()
+                    sub.next_invoice_date = sub.next_invoice_date + sub._get_interval_delta()
             except Exception as e:
                 _logger.error(
                     'Error generando factura para suscripción %s: %s',
                     sub.name, str(e),
                 )
+                sub.message_post(body=_(
+                    'No se pudo generar la factura recurrente: %s', str(e),
+                ))
         return True
 
 

@@ -52,6 +52,7 @@
                             <field name="amount"/>
                             <field name="interval"/>
                             <field name="day_of_month"/>
+                            <field name="auto_post"/>
                         </group>
                     </group>
                     <group>

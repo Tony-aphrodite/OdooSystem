@@ -13,7 +13,7 @@ ISO 20022 `pain.008` file you upload to your bank.
 
 ## Features
 
-- **Recurring invoices**: monthly, quarterly or yearly subscriptions. A daily scheduled action creates the invoices and moves the next invoice date forward.
+- **Recurring invoices**: monthly, quarterly or yearly subscriptions. A daily scheduled action creates the invoices, posts them if the subscription asks for it, and moves the next invoice date forward.
 - **SEPA mandates**: unique mandate reference (UMR), debtor IBAN and BIC, CORE or B2B scheme, sequence type and signature date. Each mandate goes through draft, active, closed or revoked, and every change is tracked in the chatter.
 - **SEPA remittances**: one click adds every posted, unpaid invoice whose customer has an active mandate. Each customer can have their own collection day.
 - **`pain.008.001.02` export**: the XML file has one payment block per collection date and sequence type (`FRST`, `RCUR`, `FNAL`, `OOFF`), and uses the mandates' scheme (`CORE` or `B2B`). After reconciliation, `FRST` mandates switch to `RCUR`.
@@ -76,6 +76,7 @@ The interface is in Spanish.
 1. **Customer**: *Alquiler Equipos → Clientes*. Open a customer, go to the **Alquiler de Equipos** tab and set the monthly fee, invoice day and collection day.
 2. **Mandate**: *SEPA → Mandatos*. Create the mandate with its reference, bank account and signature date, then click **Activate**.
 3. **Subscription**: *Facturación → Suscripciones*. Choose the customer, amount, interval, next invoice date and mandate, then click **Activate**.
+   Tick **Publicar Automáticamente** to post each invoice as soon as it is created.
 4. **Invoices**: the scheduled action *Alquiler: Generar Facturas Recurrentes* runs every day and creates draft invoices. Review and post them in Accounting.
 5. **Remittance**: *SEPA → Generar Remesa*. Pick the invoice date range, the scheme (CORE or B2B) and the requested collection date, then click **Crear Remesa**. The remittance opens with the matching pending invoices. Click **Confirmar** and **Generar XML SEPA**, and upload the file to your bank.
    You can also start from *SEPA → Remesas → New* and click **Añadir Facturas Pendientes** to add every pending invoice.
@@ -163,7 +164,6 @@ Use `-u` instead of `-i` when the module is already installed.
 
 - A remittance holds one scheme. The SEPA guidelines do not allow `CORE` and `B2B` debits in the same file, so create one remittance for each.
 - The export uses `pain.008.001.02`. Check which version your bank accepts.
-- Invoices created by the scheduled action are drafts and must be posted manually.
 - **Conciliar** updates the remittance status only. Register the payments by reconciling the bank statement in Accounting.
 
 Tested on Odoo 17.0 Community with Python 3.12 and PostgreSQL 16: installation with and without demo data, the recurring invoice job, remittance creation and XML export.
