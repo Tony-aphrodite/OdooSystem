@@ -11,6 +11,7 @@
                     <group string="Filtro de Facturas">
                         <field name="date_from"/>
                         <field name="date_to"/>
+                        <field name="scheme"/>
                     </group>
                     <group string="Datos de la Remesa">
                         <field name="requested_collection_date"/>
@@ -40,5 +41,12 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
+
+    <!-- Defined here because the action loads after views/menu_views.xml -->
+    <menuitem id="menu_sepa_export_wizard"
+              name="Generar Remesa"
+              parent="menu_sepa"
+              action="action_sepa_export_wizard"
+              sequence="5"/>
 
 </odoo>

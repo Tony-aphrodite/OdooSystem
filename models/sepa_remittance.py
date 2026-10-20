@@ -123,21 +123,31 @@ class SepaRemittance(models.Model):
             rem.line_count = len(rem.line_ids)
             rem.total_amount = sum(rem.line_ids.mapped('amount'))
 
-    def action_add_pending_invoices(self):
-        """Add all open (posted, unpaid) invoices with active SEPA mandates."""
+    def action_add_pending_invoices(self, date_from=False, date_to=False, scheme=False):
+        """Add all open (posted, unpaid) invoices with active SEPA mandates.
+
+        The export wizard can limit them by invoice date and mandate scheme.
+        """
         self.ensure_one()
         if self.state != 'draft':
             raise UserError(_('Solo se pueden añadir facturas en estado borrador.'))
 
         existing_invoice_ids = self.line_ids.mapped('invoice_id').ids
 
-        invoices = self.env['account.move'].search([
+        domain = [
             ('move_type', '=', 'out_invoice'),
             ('state', '=', 'posted'),
             ('payment_state', 'in', ['not_paid', 'partial']),
             ('partner_id.active_mandate_id', '!=', False),
             ('id', 'not in', existing_invoice_ids),
-        ])
+        ]
+        if date_from:
+            domain.append(('invoice_date', '>=', date_from))
+        if date_to:
+            domain.append(('invoice_date', '<=', date_to))
+        if scheme:
+            domain.append(('partner_id.active_mandate_id.scheme', '=', scheme))
+        invoices = self.env['account.move'].search(domain)
 
         lines_vals = []
         today = fields.Date.today()
