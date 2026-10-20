@@ -176,10 +176,26 @@ class SepaRemittance(models.Model):
         self.write({'line_ids': lines_vals})
         return True
 
+    def _get_local_instrument(self):
+        """Return the SEPA scheme (CORE or B2B) shared by all lines.
+
+        The EPC guidelines do not allow mixing Local Instrument values in
+        one pain.008 message, so CORE and B2B need separate remittances.
+        """
+        self.ensure_one()
+        schemes = set(self.line_ids.mapped(lambda l: l.scheme or 'CORE'))
+        if len(schemes) > 1:
+            raise UserError(_(
+                'La remesa mezcla mandatos CORE y B2B. El banco necesita un '
+                'fichero por esquema: cree una remesa para cada uno.'
+            ))
+        return schemes.pop() if schemes else 'CORE'
+
     def action_confirm(self):
         for rem in self:
             if not rem.line_ids:
                 raise UserError(_('No hay líneas en la remesa.'))
+            rem._get_local_instrument()
             if not rem.requested_collection_date:
                 raise UserError(_('Debe indicar la fecha de cobro solicitada.'))
             if not rem.creditor_identifier:
@@ -221,9 +237,11 @@ class SepaRemittance(models.Model):
     def _generate_pain_008_xml(self):
         """Generate ISO 20022 pain.008.001.02 XML for SEPA Direct Debit.
 
-        Lines are grouped by collection_date, creating one PmtInf block
-        per unique collection date (as required by SEPA when dates differ).
+        Lines are grouped by collection_date and sequence type, creating
+        one PmtInf block per group, because ReqdColltnDt and SeqTp are set
+        at PmtInf level. The scheme (LclInstrm) comes from the mandates.
         """
+        local_instrument = self._get_local_instrument()
         nsmap = {
             None: 'urn:iso:std:iso:20022:tech:xsd:pain.008.001.02',
             'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -247,15 +265,16 @@ class SepaRemittance(models.Model):
         initg_pty = etree.SubElement(grp_hdr, 'InitgPty')
         etree.SubElement(initg_pty, 'Nm').text = self.creditor_name or self.company_id.name
 
-        # Group lines by collection date
-        lines_by_date = defaultdict(list)
+        # Group lines by collection date and sequence type
+        lines_by_group = defaultdict(list)
         for line in self.line_ids:
             coll_date = line.collection_date or self.requested_collection_date
-            lines_by_date[coll_date].append(line)
+            seq_type = line.sequence_type or 'RCUR'
+            lines_by_group[(coll_date, seq_type)].append(line)
 
-        # --- One PmtInf block per collection date ---
-        for pmt_idx, (coll_date, lines) in enumerate(
-            sorted(lines_by_date.items()), start=1
+        # --- One PmtInf block per collection date and sequence type ---
+        for pmt_idx, ((coll_date, seq_type), lines) in enumerate(
+            sorted(lines_by_group.items()), start=1
         ):
             pmt_inf = etree.SubElement(cstmr_drct_dbt_initn, 'PmtInf')
             etree.SubElement(pmt_inf, 'PmtInfId').text = (
@@ -273,8 +292,8 @@ class SepaRemittance(models.Model):
             svc_lvl = etree.SubElement(pmt_tp_inf, 'SvcLvl')
             etree.SubElement(svc_lvl, 'Cd').text = 'SEPA'
             lcl_instrm = etree.SubElement(pmt_tp_inf, 'LclInstrm')
-            etree.SubElement(lcl_instrm, 'Cd').text = 'CORE'
-            etree.SubElement(pmt_tp_inf, 'SeqTp').text = 'RCUR'
+            etree.SubElement(lcl_instrm, 'Cd').text = local_instrument
+            etree.SubElement(pmt_tp_inf, 'SeqTp').text = seq_type
 
             # Requested Collection Date (per group)
             etree.SubElement(pmt_inf, 'ReqdColltnDt').text = (
@@ -441,6 +460,26 @@ class SepaRemittanceLine(models.Model):
     )
     iban = fields.Char(string='IBAN del Deudor')
     bic = fields.Char(string='BIC del Deudor')
+    scheme = fields.Selection([
+        ('CORE', 'CORE (Particulares)'),
+        ('B2B', 'B2B (Empresas)'),
+    ], string='Esquema',
+        compute='_compute_mandate_settings',
+        store=True,
+        readonly=False,
+    )
+    sequence_type = fields.Selection([
+        ('FRST', 'Primer Adeudo'),
+        ('RCUR', 'Recurrente'),
+        ('FNAL', 'Último Adeudo'),
+        ('OOFF', 'Adeudo Único'),
+    ], string='Tipo de Secuencia',
+        compute='_compute_mandate_settings',
+        store=True,
+        readonly=False,
+        help='Se copia del mandato al añadir el recibo, para que el fichero '
+             'no cambie si el mandato pasa después de FRST a RCUR',
+    )
 
     state = fields.Selection([
         ('pending', 'Pendiente'),
@@ -453,3 +492,11 @@ class SepaRemittanceLine(models.Model):
         help='Código o motivo de devolución del banco',
     )
     return_date = fields.Date(string='Fecha de Devolución')
+
+    @api.depends('mandate_id')
+    def _compute_mandate_settings(self):
+        # Depends on mandate_id only: later changes on the mandate must not
+        # rewrite lines that were already added to a remittance.
+        for line in self:
+            line.scheme = line.mandate_id.scheme
+            line.sequence_type = line.mandate_id.sequence_type
