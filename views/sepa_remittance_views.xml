@@ -85,6 +85,8 @@
                                     <field name="partner_id"/>
                                     <field name="invoice_id"/>
                                     <field name="mandate_id"/>
+                                    <field name="scheme" optional="hide"/>
+                                    <field name="sequence_type"/>
                                     <field name="iban"/>
                                     <field name="bic"/>
                                     <field name="amount" sum="Total"/>

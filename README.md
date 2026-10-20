@@ -16,7 +16,7 @@ ISO 20022 `pain.008` file you upload to your bank.
 - **Recurring invoices**: monthly, quarterly or yearly subscriptions. A daily scheduled action creates the invoices and moves the next invoice date forward.
 - **SEPA mandates**: unique mandate reference (UMR), debtor IBAN and BIC, CORE or B2B scheme, sequence type and signature date. Each mandate goes through draft, active, closed or revoked, and every change is tracked in the chatter.
 - **SEPA remittances**: one click adds every posted, unpaid invoice whose customer has an active mandate. Each customer can have their own collection day.
-- **`pain.008.001.02` export**: the XML file has one payment block per collection date, as SEPA requires when dates differ.
+- **`pain.008.001.02` export**: the XML file has one payment block per collection date and sequence type (`FRST`, `RCUR`, `FNAL`, `OOFF`), and uses the mandates' scheme (`CORE` or `B2B`). After reconciliation, `FRST` mandates switch to `RCUR`.
 - **Remittance workflow**: Draft → Confirmed → Exported → Sent to bank → Reconciled → Closed. Returned debits are recorded per line with the reason and date.
 - **Rental settings on the customer**: monthly fee, invoice description, invoice day, collection day and rental period. Smart buttons open the customer's mandates, subscriptions and invoices.
 - **Dashboard**: active customers, monthly recurring revenue, active mandates, invoices this month, pending invoices, remittances, returns and return rate.
@@ -148,7 +148,7 @@ cleanup_demo_data(env)
 
 ## Known limitations
 
-- Every transaction is exported as `CORE` / `RCUR`. The scheme and sequence type stored on the mandate are not yet written to the file.
+- A remittance holds one scheme. The SEPA guidelines do not allow `CORE` and `B2B` debits in the same file, so create one remittance for each.
 - The export uses `pain.008.001.02`. Check which version your bank accepts.
 - Invoices created by the scheduled action are drafts and must be posted manually.
 - **Conciliar** updates the remittance status only. Register the payments by reconciling the bank statement in Accounting.
