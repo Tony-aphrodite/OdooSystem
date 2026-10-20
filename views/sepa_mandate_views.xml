@@ -11,6 +11,8 @@
                     <button name="action_activate" string="Activar"
                             type="object" class="oe_highlight"
                             invisible="state != 'draft'"/>
+                    <button name="%(action_report_sepa_mandate)d" string="Imprimir Orden"
+                            type="action"/>
                     <button name="action_close" string="Cerrar"
                             type="object"
                             invisible="state != 'active'"/>
