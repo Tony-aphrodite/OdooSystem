@@ -80,15 +80,29 @@ BANK_CODES = [
 ]
 
 
+def _ccc_check_digit(digits):
+    """Check digit of a Spanish account number (CCC) over 10 digits."""
+    weights = (1, 2, 4, 8, 5, 10, 9, 7, 3, 6)
+    value = 11 - sum(int(d) * w for d, w in zip(digits, weights)) % 11
+    return {10: 1, 11: 0}.get(value, value)
+
+
 def _generate_fake_iban(bank_code=None):
-    """Generate a fake but structurally valid-looking Spanish IBAN."""
+    """Generate a fictional Spanish IBAN with valid check digits.
+
+    Mandates only accept valid IBANs, so both the national check digits
+    and the IBAN check digits are calculated.
+    """
     if not bank_code:
         bank_code = random.choice(BANK_CODES)
     branch = '%04d' % random.randint(1, 9999)
-    control = '%02d' % random.randint(0, 99)
     account = '%010d' % random.randint(1, 9999999999)
-    # Fake check digits (real IBAN validation not needed for demo)
-    check = '%02d' % random.randint(10, 99)
+    control = '%d%d' % (
+        _ccc_check_digit('00' + bank_code + branch), _ccc_check_digit(account),
+    )
+    bban = bank_code + branch + control + account
+    # ISO 13616: 98 - (BBAN + country code + "00" as a number) mod 97
+    check = '%02d' % (98 - int(''.join(str(int(c, 36)) for c in bban + 'ES00')) % 97)
     return 'ES%s %s %s %s %s' % (
         check, bank_code, branch, control, account,
     )
