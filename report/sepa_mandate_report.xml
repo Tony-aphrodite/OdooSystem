@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_sepa_mandate" model="ir.actions.report">
+        <field name="name">Orden de domiciliación SEPA</field>
+        <field name="model">sepa.mandate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">alquiler_equipos.report_sepa_mandate</field>
+        <field name="report_file">alquiler_equipos.report_sepa_mandate</field>
+        <field name="print_report_name">'Orden SEPA - %s' % object.unique_mandate_reference</field>
+        <field name="binding_model_id" ref="model_sepa_mandate"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Mandate form for the debtor to sign, with the standard EPC wording in Spanish and English -->
+    <template id="report_sepa_mandate_document">
+        <t t-call="web.external_layout">
+            <t t-set="creditor" t-value="o.company_id"/>
+            <t t-set="debtor" t-value="o.partner_id"/>
+            <t t-set="b2b" t-value="o.scheme == 'B2B'"/>
+            <div class="page">
+                <h4 class="text-center mb-0">
+                    <t t-if="b2b">Orden de domiciliación de adeudo directo SEPA B2B</t>
+                    <t t-else="">Orden de domiciliación de adeudo directo SEPA</t>
+                </h4>
+                <p class="text-center text-muted mb-2">
+                    <t t-if="b2b">SEPA Business-to-Business Direct Debit Mandate</t>
+                    <t t-else="">SEPA Direct Debit Mandate</t>
+                </p>
+
+                <table class="table table-sm table-bordered mb-2">
+                    <colgroup><col style="width: 50%;"/><col/></colgroup>
+                    <tbody>
+                        <tr>
+                            <td><strong>Referencia de la orden de domiciliación</strong> <small class="text-muted">/ Mandate reference</small></td>
+                            <td><span t-field="o.unique_mandate_reference"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identificador del acreedor</strong> <small class="text-muted">/ Creditor identifier</small></td>
+                            <td><span t-out="o.creditor_identifier or creditor.sepa_creditor_identifier"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nombre del acreedor</strong> <small class="text-muted">/ Creditor's name</small></td>
+                            <td><span t-field="creditor.name"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dirección del acreedor</strong> <small class="text-muted">/ Creditor's address</small></td>
+                            <td>
+                                <span t-field="creditor.street"/><t t-if="creditor.street2">, <span t-field="creditor.street2"/></t>,
+                                <span t-field="creditor.zip"/> <span t-field="creditor.city"/><t t-if="creditor.state_id"> (<span t-field="creditor.state_id.name"/>)</t><t t-if="creditor.country_id">, <span t-field="creditor.country_id.name"/></t>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-justify mb-2" style="font-size: 0.85em;">
+                    <t t-if="b2b">
+                        <p class="mb-1">
+                            Mediante la firma de esta orden de domiciliación, el deudor
+                            autoriza (A) al acreedor a enviar instrucciones a la entidad del
+                            deudor para adeudar su cuenta y (B) a la entidad para efectuar
+                            los adeudos en su cuenta siguiendo las instrucciones del
+                            acreedor. Esta orden de domiciliación está prevista para
+                            operaciones exclusivamente entre empresas y/o autónomos. El
+                            deudor no tiene derecho a que su entidad le reembolse una vez
+                            que se haya realizado el cargo en cuenta, pero puede solicitar a
+                            su entidad que no efectúe el adeudo en la cuenta hasta la fecha
+                            debida. Podrá obtener información detallada del procedimiento en
+                            su entidad financiera.
+                        </p>
+                        <p class="text-muted mb-0">
+                            By signing this mandate form, you authorise (A) the creditor to
+                            send instructions to your bank to debit your account and (B)
+                            your bank to debit your account in accordance with the
+                            instructions from the creditor. This mandate is only intended
+                            for business-to-business transactions. You are not entitled to a
+                            refund from your bank after your account has been debited, but
+                            you are entitled to request your bank not to debit your account
+                            up until the day on which the payment is due. Please contact
+                            your bank for detailed procedures.
+                        </p>
+                    </t>
+                    <t t-else="">
+                        <p class="mb-1">
+                            Mediante la firma de esta orden de domiciliación, el deudor
+                            autoriza (A) al acreedor a enviar instrucciones a la entidad del
+                            deudor para adeudar su cuenta y (B) a la entidad para efectuar
+                            los adeudos en su cuenta siguiendo las instrucciones del
+                            acreedor. Como parte de sus derechos, el deudor está legitimado
+                            al reembolso por su entidad en los términos y condiciones del
+                            contrato suscrito con la misma. La solicitud de reembolso deberá
+                            efectuarse dentro de las ocho semanas que siguen a la fecha de
+                            adeudo en cuenta. Puede obtener información adicional sobre sus
+                            derechos en su entidad financiera.
+                        </p>
+                        <p class="text-muted mb-0">
+                            By signing this mandate form, you authorise (A) the creditor to
+                            send instructions to your bank to debit your account and (B)
+                            your bank to debit your account in accordance with the
+                            instructions from the creditor. As part of your rights, you are
+                            entitled to a refund from your bank under the terms and
+                            conditions of your agreement with your bank. A refund must be
+                            claimed within eight weeks starting from the date on which your
+                            account was debited. Your rights are explained in a statement
+                            that you can obtain from your bank.
+                        </p>
+                    </t>
+                </div>
+
+                <table class="table table-sm table-bordered mb-2">
+                    <colgroup><col style="width: 50%;"/><col/></colgroup>
+                    <tbody>
+                        <tr>
+                            <td><strong>Nombre del deudor</strong> <small class="text-muted">/ Debtor's name</small></td>
+                            <td><span t-field="debtor.name"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dirección del deudor</strong> <small class="text-muted">/ Address of the debtor</small></td>
+                            <td>
+                                <span t-field="debtor.street"/><t t-if="debtor.street2">, <span t-field="debtor.street2"/></t>,
+                                <span t-field="debtor.zip"/> <span t-field="debtor.city"/><t t-if="debtor.state_id"> (<span t-field="debtor.state_id.name"/>)</t><t t-if="debtor.country_id">, <span t-field="debtor.country_id.name"/></t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>BIC</strong> <small class="text-muted">/ Swift BIC</small></td>
+                            <td><span t-field="o.bic"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Número de cuenta - IBAN</strong> <small class="text-muted">/ Account number - IBAN</small></td>
+                            <td><strong t-field="o.iban"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipo de pago</strong> <small class="text-muted">/ Type of payment</small></td>
+                            <td>
+                                <t t-if="o.sequence_type == 'OOFF'">Pago único <small class="text-muted">/ One-off payment</small></t>
+                                <t t-else="">Pago recurrente <small class="text-muted">/ Recurrent payment</small></t>
+                            </td>
+                        </tr>
+                        <tr style="height: 45px;">
+                            <td><strong>Fecha - Localidad</strong> <small class="text-muted">/ Date - Place of signature</small></td>
+                            <td></td>
+                        </tr>
+                        <tr style="height: 110px;">
+                            <td><strong>Firma del deudor</strong> <small class="text-muted">/ Signature of the debtor</small></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="small text-center mb-0">
+                    TODOS LOS CAMPOS HAN DE SER CUMPLIMENTADOS OBLIGATORIAMENTE.
+                    UNA VEZ FIRMADA ESTA ORDEN DE DOMICILIACIÓN DEBE SER ENVIADA AL ACREEDOR PARA SU CUSTODIA.<br/>
+                    <span class="text-muted">All fields are mandatory. Once signed, this mandate must be sent to the creditor for storage.</span>
+                </p>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_sepa_mandate">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="alquiler_equipos.report_sepa_mandate_document"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

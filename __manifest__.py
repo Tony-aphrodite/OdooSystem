@@ -21,6 +21,7 @@
     'data': [
         'security/alquiler_security.xml',
         'security/ir.model.access.csv',
+        'report/sepa_mandate_report.xml',
         'views/sepa_mandate_views.xml',
         'views/res_partner_views.xml',
         'views/sepa_remittance_views.xml',

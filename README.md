@@ -15,6 +15,7 @@ ISO 20022 `pain.008` file you upload to your bank.
 
 - **Recurring invoices**: monthly, quarterly or yearly subscriptions. A daily scheduled action creates the invoices and moves the next invoice date forward.
 - **SEPA mandates**: unique mandate reference (UMR), debtor IBAN and BIC, CORE or B2B scheme, sequence type and signature date. Each mandate goes through draft, active, closed or revoked, and every change is tracked in the chatter.
+- **Printable mandate form**: **Imprimir Orden** produces the *Orden de domiciliación de adeudo directo SEPA* (CORE or B2B wording, in Spanish and English) filled in with the creditor and debtor data, ready for the customer to sign.
 - **SEPA remittances**: one click adds every posted, unpaid invoice whose customer has an active mandate. Each customer can have their own collection day.
 - **`pain.008.001.02` export**: the XML file has one payment block per collection date, as SEPA requires when dates differ.
 - **Remittance workflow**: Draft → Confirmed → Exported → Sent to bank → Reconciled → Closed. Returned debits are recorded per line with the reason and date.
