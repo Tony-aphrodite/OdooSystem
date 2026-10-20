@@ -12,7 +12,7 @@
                     <div class="alq_hero">
                         <div class="alq_hero_content">
                             <h1>Panel de Control</h1>
-                            <p class="alq_subtitle">Alquiler de Equipos · Aqua Plus Vital S.L.</p>
+                            <p class="alq_subtitle">Alquiler de Equipos</p>
                         </div>
                         <div class="alq_hero_badge">
                             <i class="fa fa-tachometer"/>
@@ -68,7 +68,7 @@
 
                         <div class="alq_kpi alq_kpi_orange" name="invoices_month">
                             <button name="action_view_invoices_this_month" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-file-invoice"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-calendar-check-o"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Facturas del Mes</div>
                                     <div class="alq_kpi_value">

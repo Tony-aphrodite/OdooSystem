@@ -198,7 +198,7 @@ def generate_demo_customers(env):
         })
 
         # Create SEPA mandate (active)
-        mandate_ref = 'APV-%04d-%04d' % (start_date.year, mandate_counter)
+        mandate_ref = 'MND-%04d-%04d' % (start_date.year, mandate_counter)
         mandate_counter += 1
 
         mandate = Mandate.create({
@@ -209,7 +209,7 @@ def generate_demo_customers(env):
             'state': 'active',
             'scheme': 'CORE',
             'sequence_type': 'RCUR',
-            'creditor_identifier': 'ES91000B16612525',
+            'creditor_identifier': company.sepa_creditor_identifier,
             'company_id': company.id,
         })
 

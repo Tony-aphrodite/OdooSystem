@@ -1,3 +1,4 @@
+from . import res_company
 from . import sepa_mandate
 from . import res_partner
 from . import sepa_remittance

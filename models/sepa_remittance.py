@@ -78,18 +78,18 @@ class SepaRemittance(models.Model):
     )
     creditor_identifier = fields.Char(
         string='Identificador del Acreedor (CIF)',
-        default='ES91000B16612525',
+        default=lambda self: self.env.company.sepa_creditor_identifier,
         help='Identificador SEPA del acreedor (AT-02). '
              'Normalmente ES + sufijo + CIF.',
     )
     creditor_iban = fields.Char(
         string='IBAN del Acreedor',
-        default='ES9800810652210002257827',
+        default=lambda self: self.env.company._get_sepa_creditor_bank().acc_number,
         help='Cuenta bancaria del acreedor donde se recibirán los fondos',
     )
     creditor_bic = fields.Char(
         string='BIC del Acreedor',
-        default='BSABESBB',
+        default=lambda self: self.env.company._get_sepa_creditor_bank().bank_bic,
     )
     bank_name = fields.Selection([
         ('cajamar', 'Cajamar'),
@@ -300,7 +300,8 @@ class SepaRemittance(models.Model):
             if self.creditor_bic:
                 etree.SubElement(fin_instn_id, 'BIC').text = self.creditor_bic
             else:
-                etree.SubElement(fin_instn_id, 'Othr').text = 'NOTPROVIDED'
+                cdtr_othr = etree.SubElement(fin_instn_id, 'Othr')
+                etree.SubElement(cdtr_othr, 'Id').text = 'NOTPROVIDED'
 
             # Creditor Scheme Identification
             cdtr_schme_id = etree.SubElement(pmt_inf, 'CdtrSchmeId')

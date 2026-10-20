@@ -11,6 +11,7 @@
         - Gestión de equipos y trazabilidad
     """,
     'author': 'Steve.C',
+    'website': 'https://github.com/Tony-aphrodite/OdooSystem',
     'depends': [
         'base',
         'account',
@@ -26,11 +27,14 @@
         'views/recurring_invoice_views.xml',
         'views/dashboard_views.xml',
         'views/menu_views.xml',
+        'views/res_company_views.xml',
         'data/sequence_data.xml',
-        'data/company_data.xml',
         'data/cron_data.xml',
-        'data/user_data.xml',
         'wizard/sepa_export_wizard_views.xml',
+    ],
+    'demo': [
+        'demo/company_demo.xml',
+        'demo/user_demo.xml',
     ],
     'assets': {
         'web.assets_backend': [

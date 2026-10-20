@@ -27,16 +27,16 @@ class SepaExportWizard(models.TransientModel):
     creditor_identifier = fields.Char(
         string='Identificador del Acreedor',
         required=True,
-        default='ES91000B16612525',
+        default=lambda self: self.env.company.sepa_creditor_identifier,
     )
     creditor_iban = fields.Char(
         string='IBAN del Acreedor',
         required=True,
-        default='ES9800810652210002257827',
+        default=lambda self: self.env.company._get_sepa_creditor_bank().acc_number,
     )
     creditor_bic = fields.Char(
         string='BIC del Acreedor',
-        default='BSABESBB',
+        default=lambda self: self.env.company._get_sepa_creditor_bank().bank_bic,
     )
 
     def action_create_remittance(self):

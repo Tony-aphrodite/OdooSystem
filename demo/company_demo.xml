@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Demo Company (fictional) -->
+    <record id="base.main_company" model="res.company">
+        <field name="name">Alquileres Demo S.L.</field>
+        <field name="street">Calle Mayor, 1</field>
+        <field name="city">Cuenca</field>
+        <field name="zip">16001</field>
+        <field name="phone">+34 969 000 000</field>
+        <field name="sepa_creditor_identifier">ES81000B00000000</field>
+    </record>
+
+    <!-- Demo Partner (fictional) -->
+    <record id="base.main_partner" model="res.partner">
+        <field name="name">Alquileres Demo S.L.</field>
+        <field name="street">Calle Mayor, 1</field>
+        <field name="city">Cuenca</field>
+        <field name="zip">16001</field>
+        <field name="phone">+34 969 000 000</field>
+        <field name="email">info@example.com</field>
+    </record>
+
+    <!-- Demo creditor bank account (IBAN from the public IBAN registry example) -->
+    <record id="bank_demo_caixabank" model="res.bank">
+        <field name="name">CaixaBank</field>
+        <field name="bic">CAIXESBBXXX</field>
+    </record>
+
+    <record id="partner_bank_demo_company" model="res.partner.bank">
+        <field name="acc_number">ES91 2100 0418 4502 0005 1332</field>
+        <field name="partner_id" ref="base.main_partner"/>
+        <field name="bank_id" ref="bank_demo_caixabank"/>
+    </record>
+
+</odoo>
