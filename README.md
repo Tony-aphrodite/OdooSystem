@@ -135,6 +135,18 @@ from odoo.addons.alquiler_equipos.data.demo_cleanup import cleanup_demo_data
 cleanup_demo_data(env)
 ```
 
+## Running the tests
+
+The automated tests cover the recurring invoice job, the remittance workflow and the `pain.008` export.
+They create their own company, user and customers inside a transaction that is rolled back, so they do not depend on the data in the database.
+Run them on a test database, not on production:
+
+```bash
+odoo-bin -d test_database -i alquiler_equipos --test-tags /alquiler_equipos --stop-after-init
+```
+
+Use `-u` instead of `-i` when the module is already installed.
+
 ## Data model
 
 | Model | Purpose |
