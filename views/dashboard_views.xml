@@ -15,7 +15,7 @@
                             <p class="alq_subtitle">Alquiler de Equipos</p>
                         </div>
                         <div class="alq_hero_badge">
-                            <i class="fa fa-tachometer"/>
+                            <i class="fa fa-tachometer" role="img" aria-label="Panel de Control" title="Panel de Control"/>
                         </div>
                     </div>
 
@@ -23,7 +23,7 @@
 
                         <div class="alq_kpi alq_kpi_blue" name="customers">
                             <button name="action_view_customers" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-users"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-users" role="img" aria-label="Clientes Activos" title="Clientes Activos"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Clientes Activos</div>
                                     <div class="alq_kpi_value">
@@ -38,7 +38,7 @@
 
                         <div class="alq_kpi alq_kpi_green" name="revenue">
                             <div class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-euro"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-euro" role="img" aria-label="Facturación Mensual" title="Facturación Mensual"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Facturación Mensual</div>
                                     <div class="alq_kpi_value">
@@ -53,7 +53,7 @@
 
                         <div class="alq_kpi alq_kpi_purple" name="mandates">
                             <button name="action_view_active_mandates" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-file-text-o"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-file-text-o" role="img" aria-label="Mandatos SEPA" title="Mandatos SEPA"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Mandatos SEPA</div>
                                     <div class="alq_kpi_value">
@@ -68,7 +68,7 @@
 
                         <div class="alq_kpi alq_kpi_orange" name="invoices_month">
                             <button name="action_view_invoices_this_month" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-calendar-check-o"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-calendar-check-o" role="img" aria-label="Facturas del Mes" title="Facturas del Mes"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Facturas del Mes</div>
                                     <div class="alq_kpi_value">
@@ -83,7 +83,7 @@
 
                         <div class="alq_kpi alq_kpi_red" name="pending">
                             <button name="action_view_pending_invoices" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-exclamation-triangle"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-exclamation-triangle" role="img" aria-label="Facturas Pendientes" title="Facturas Pendientes"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Facturas Pendientes</div>
                                     <div class="alq_kpi_value">
@@ -98,7 +98,7 @@
 
                         <div class="alq_kpi alq_kpi_teal" name="remesas">
                             <button name="action_view_remesas" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-bank"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-bank" role="img" aria-label="Remesas del Mes" title="Remesas del Mes"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Remesas del Mes</div>
                                     <div class="alq_kpi_value">
@@ -113,7 +113,7 @@
 
                         <div class="alq_kpi alq_kpi_pink" name="returns">
                             <button name="action_view_returns" type="object" class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-undo"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-undo" role="img" aria-label="Devoluciones" title="Devoluciones"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Devoluciones</div>
                                     <div class="alq_kpi_value">
@@ -128,7 +128,7 @@
 
                         <div class="alq_kpi alq_kpi_dark" name="morosidad">
                             <div class="alq_kpi_btn">
-                                <div class="alq_kpi_icon"><i class="fa fa-percent"/></div>
+                                <div class="alq_kpi_icon"><i class="fa fa-percent" role="img" aria-label="Tasa de Morosidad" title="Tasa de Morosidad"/></div>
                                 <div class="alq_kpi_body">
                                     <div class="alq_kpi_label">Tasa de Morosidad</div>
                                     <div class="alq_kpi_value">
