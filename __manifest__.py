@@ -15,6 +15,7 @@
     'depends': [
         'base',
         'account',
+        'base_iban',
         'contacts',
         'mail',
     ],

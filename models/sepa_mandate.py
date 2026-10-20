@@ -2,6 +2,8 @@ import logging
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+from .sepa_validation import is_valid_bic, is_valid_creditor_identifier, is_valid_iban
+
 _logger = logging.getLogger(__name__)
 
 
@@ -86,6 +88,28 @@ class SepaMandate(models.Model):
          'UNIQUE(unique_mandate_reference, company_id)',
          'La referencia de mandato debe ser única por empresa.'),
     ]
+
+    @api.constrains('partner_bank_id', 'bic', 'creditor_identifier')
+    def _check_sepa_identifiers(self):
+        for mandate in self:
+            if not is_valid_iban(mandate.partner_bank_id.acc_number):
+                raise ValidationError(_(
+                    'La cuenta %(account)s del mandato %(mandate)s no es un IBAN válido. '
+                    'Los adeudos SEPA necesitan el IBAN del deudor.',
+                    account=mandate.partner_bank_id.acc_number,
+                    mandate=mandate.unique_mandate_reference,
+                ))
+            if mandate.bic and not is_valid_bic(mandate.bic):
+                raise ValidationError(_(
+                    'El BIC %s no es válido. Debe tener 8 u 11 caracteres en mayúsculas, '
+                    'por ejemplo CAIXESBBXXX.',
+                    mandate.bic,
+                ))
+            identifier = mandate.creditor_identifier
+            if identifier and not is_valid_creditor_identifier(identifier):
+                raise ValidationError(_(
+                    'El identificador de acreedor SEPA %s no es válido.', identifier,
+                ))
 
     def action_activate(self):
         for mandate in self:

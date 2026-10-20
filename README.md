@@ -19,6 +19,7 @@ ISO 20022 `pain.008` file you upload to your bank.
 - **`pain.008.001.02` export**: the XML file has one payment block per collection date and sequence type (`FRST`, `RCUR`, `FNAL`, `OOFF`), and uses the mandates' scheme (`CORE` or `B2B`). After reconciliation, `FRST` mandates switch to `RCUR`.
 - **Remittance workflow**: Draft → Confirmed → Exported → Sent to bank → Reconciled → Closed. Returned debits are recorded per line with the reason and date.
 - **Rental settings on the customer**: monthly fee, invoice description, invoice day, collection day and rental period. Smart buttons open the customer's mandates, subscriptions and invoices.
+- **Checks before the bank sees the file**: mandates need a valid IBAN, and confirming a remittance checks the creditor identifier, every IBAN (check digits) and every BIC, listing all problems at once.
 - **Dashboard**: active customers, monthly recurring revenue, active mandates, invoices this month, pending invoices, remittances, returns and return rate.
 - **Access rights**: a *User* group and a *Manager* group.
 - **Demo data**: 250 fictional customers with mandates and subscriptions, so you can try everything in a minute.
@@ -66,7 +67,7 @@ The interface is in Spanish.
 
 ## Configuration
 
-1. **Settings → Users & Companies → Companies**: open your company and fill in **Identificador de Acreedor SEPA** (your SEPA creditor identifier).
+1. **Settings → Users & Companies → Companies**: open your company and fill in **Identificador de Acreedor SEPA** (your SEPA creditor identifier, for example `ES97000B12345678`). Its check digits are verified when you save.
 2. On the company's contact, add the bank account that receives the payments (IBAN and bank with BIC).
    New remittances use the first bank account by default.
 3. Install your country's accounting localization so the company currency is EUR (for Spain, `l10n_es`).
@@ -126,7 +127,7 @@ When the module is installed on a database **with demo data**, it adds:
 
 - a fictional company, *Alquileres Demo S.L.*, with a sample creditor identifier and bank account;
 - two users, `gestor` (manager) and `tecnico` (user);
-- 250 fictional customers (references `DEMO-CLI-0001` to `DEMO-CLI-0250`) with fake IBANs, active mandates and monthly subscriptions.
+- 250 fictional customers (references `DEMO-CLI-0001` to `DEMO-CLI-0250`) with fictional IBANs that pass the check digit test, active mandates and monthly subscriptions.
 
 On a database without demo data, none of this is created.
 To remove the demo customers later, run this from an Odoo shell:
