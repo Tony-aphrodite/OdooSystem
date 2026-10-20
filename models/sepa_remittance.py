@@ -52,6 +52,7 @@ class SepaRemittance(models.Model):
     line_count = fields.Integer(
         string='Nº de Recibos',
         compute='_compute_totals',
+        store=True,
     )
     total_amount = fields.Monetary(
         string='Importe Total',

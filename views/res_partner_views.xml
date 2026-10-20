@@ -102,7 +102,7 @@
                                         <field name="name"/>
                                     </div>
                                     <div class="alq_cc_city">
-                                        <i class="fa fa-map-marker"/>
+                                        <i class="fa fa-map-marker" role="img" aria-label="Ciudad" title="Ciudad"/>
                                         <field name="city"/>
                                     </div>
                                 </div>
@@ -121,15 +121,15 @@
                                 </div>
                                 <div class="alq_cc_meta">
                                     <div t-if="record.email.raw_value" class="alq_cc_meta_item">
-                                        <i class="fa fa-envelope"/>
+                                        <i class="fa fa-envelope" role="img" aria-label="Email" title="Email"/>
                                         <field name="email"/>
                                     </div>
                                     <div t-if="record.phone.raw_value" class="alq_cc_meta_item">
-                                        <i class="fa fa-phone"/>
+                                        <i class="fa fa-phone" role="img" aria-label="Teléfono" title="Teléfono"/>
                                         <field name="phone"/>
                                     </div>
                                     <div class="alq_cc_meta_item">
-                                        <i class="fa fa-file-text-o"/>
+                                        <i class="fa fa-file-text-o" role="img" aria-label="Mandato SEPA" title="Mandato SEPA"/>
                                         <t t-if="record.active_mandate_id.raw_value">Con mandato SEPA</t>
                                         <t t-else="">Sin mandato</t>
                                     </div>
