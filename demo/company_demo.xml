@@ -7,6 +7,8 @@
         <field name="street">Calle Mayor, 1</field>
         <field name="city">Cuenca</field>
         <field name="zip">16001</field>
+        <field name="state_id" ref="base.state_es_cu"/>
+        <field name="country_id" ref="base.es"/>
         <field name="phone">+34 969 000 000</field>
         <field name="sepa_creditor_identifier">ES81000B00000000</field>
     </record>
@@ -17,6 +19,8 @@
         <field name="street">Calle Mayor, 1</field>
         <field name="city">Cuenca</field>
         <field name="zip">16001</field>
+        <field name="state_id" ref="base.state_es_cu"/>
+        <field name="country_id" ref="base.es"/>
         <field name="phone">+34 969 000 000</field>
         <field name="email">info@example.com</field>
     </record>
