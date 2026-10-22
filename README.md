@@ -1,5 +1,6 @@
 # Odoo Equipment Rental Billing with SEPA Direct Debit
 
+[![Tests](https://github.com/Tony-aphrodite/OdooSystem/actions/workflows/tests.yml/badge.svg)](https://github.com/Tony-aphrodite/OdooSystem/actions/workflows/tests.yml)
 ![Odoo 17.0](https://img.shields.io/badge/Odoo-17.0-714B67)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![SEPA pain.008](https://img.shields.io/badge/SEPA-pain.008.001.02-0052B4)
@@ -149,6 +150,9 @@ odoo-bin -d test_database -i alquiler_equipos --test-tags /alquiler_equipos --st
 ```
 
 Use `-u` instead of `-i` when the module is already installed.
+
+GitHub Actions runs the same command on every push and pull request, using the official `odoo:17.0` image and PostgreSQL 16 ([workflow](.github/workflows/tests.yml)).
+The run also fails if Odoo logs a warning or an error while installing the module.
 
 ## Data model
 
