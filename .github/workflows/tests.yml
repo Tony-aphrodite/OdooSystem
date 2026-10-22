@@ -1,0 +1,54 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  odoo:
+    name: Odoo 17 module tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # The official image ships Odoo 17, its Python dependencies and wkhtmltopdf.
+    # Root is needed so actions/checkout can write to the workspace.
+    container:
+      image: odoo:17.0
+      options: --user root
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: addons/alquiler_equipos
+
+      - name: Install the module and run its tests
+        shell: bash
+        run: |
+          odoo --db_host=db --db_user=odoo --db_password=odoo -d test \
+            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,"$GITHUB_WORKSPACE/addons" \
+            -i alquiler_equipos --test-tags /alquiler_equipos \
+            --stop-after-init --log-level=test 2>&1 | tee odoo.log
+
+      - name: Fail on warnings or errors in the log
+        shell: bash
+        run: |
+          if grep -E ' (WARNING|ERROR|CRITICAL) ' odoo.log; then
+            echo "::error::Odoo logged warnings or errors while installing or testing the module"
+            exit 1
+          fi
+          grep -E '[0-9]+ failed, [0-9]+ error\(s\) of [0-9]+ tests' odoo.log
